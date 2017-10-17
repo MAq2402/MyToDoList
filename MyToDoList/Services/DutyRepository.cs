@@ -9,7 +9,8 @@ namespace MyToDoList.Services
 {
     public interface IDutyRepository
     {
-        List<Duty> Duties { get; }
+        IEnumerable<Duty> Duties { get; }
+        void AddDuty(Duty newDuty);
     }
     public class MockDutyRepository:IDutyRepository
     {
@@ -25,6 +26,11 @@ namespace MyToDoList.Services
 
         };
 
-        public List<Duty> Duties => DutiesData;
+        public IEnumerable<Duty> Duties => DutiesData;
+
+        public void AddDuty(Duty newDuty)
+        {
+            
+        }
     }
 }

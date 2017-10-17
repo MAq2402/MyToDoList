@@ -1,0 +1,15 @@
+﻿body {
+
+}
+.duty{
+    margin-bottom:10px;
+}
+
+.glyphicon-ok
+{
+    float:right;
+}
+.glyphicon-remove {
+    float: right;
+    margin-right:20px;
+}

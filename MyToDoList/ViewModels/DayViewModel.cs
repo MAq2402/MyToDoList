@@ -1,4 +1,5 @@
-﻿using MyToDoList.Enums;
+﻿using MyToDoList.Entities;
+using MyToDoList.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace MyToDoList.ViewModels
 {
     public class DayViewModel
     {
-        public Day Day { get; set; }
+        public IEnumerable<Duty> Duties { get; set; }
     }
 }
