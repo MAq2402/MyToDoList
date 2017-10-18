@@ -1,4 +1,6 @@
-﻿using MyToDoList.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyToDoList.DbContexts;
+using MyToDoList.Entities;
 using MyToDoList.Enums;
 using System;
 using System.Collections.Generic;
@@ -12,25 +14,20 @@ namespace MyToDoList.Services
         IEnumerable<Duty> Duties { get; }
         void AddDuty(Duty newDuty);
     }
-    public class MockDutyRepository:IDutyRepository
+    public class DutyRepository:IDutyRepository
     {
-        private List<Duty> DutiesData = new List<Duty>
+        private MyToDoListDbContext _context;
+
+        public DutyRepository(MyToDoListDbContext context)
         {
-            new Duty {Content="XDDDD",Day=Day.Monday},
-            new Duty {Content="XDDDD",Day=Day.Tuesday},
-            new Duty {Content="XDDDD",Day=Day.Wednesday},
-            new Duty {Content="XDDDD",Day=Day.Thursday},
-            new Duty {Content="XDDDD",Day=Day.Friday},
-            new Duty {Content="XDDDD",Day=Day.Thursday},
-            new Duty {Content="XDDDD",Day=Day.Saturday}
+            _context = context;
+        }
 
-        };
-
-        public IEnumerable<Duty> Duties => DutiesData;
+        public IEnumerable<Duty> Duties => _context.Duties.Include(d=>d.Category);
 
         public void AddDuty(Duty newDuty)
         {
-            
+            _context.Duties.Add(newDuty);
         }
     }
 }

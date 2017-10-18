@@ -22,10 +22,7 @@ namespace MyToDoList.ViewComponents
             var model = new DayViewModel()
             {
                 Duties = _dutyReposiotory.Duties
-            };
-
-            
-
+            };            
             return View(model);
         }
     }

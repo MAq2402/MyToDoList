@@ -21,5 +21,6 @@ namespace MyToDoList
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+                
     }
 }

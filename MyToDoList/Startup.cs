@@ -8,17 +8,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MyToDoList.Middleware;
 using MyToDoList.Services;
+using MyToDoList.DbContexts;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyToDoList
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddScoped<IDutyRepository, MockDutyRepository>();
+            services.AddDbContext<MyToDoListDbContext>(options =>
+                                                            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IDutyRepository,DutyRepository>();
+            services.AddScoped<IDbContextService,DbContextService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
