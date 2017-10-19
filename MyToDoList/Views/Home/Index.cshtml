@@ -1,5 +1,14 @@
 ﻿@{
     ViewBag.Title = "MyToDoList";
 }
-
-@await Component.InvokeAsync("Day");
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col-sm-8">
+            @await Component.InvokeAsync("Day")
+        </div>
+        <div class="col-sm-4">
+            @await Component.InvokeAsync("Category")
+        </div>
+    </div>
+</div>

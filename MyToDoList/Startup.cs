@@ -28,6 +28,7 @@ namespace MyToDoList
             services.AddDbContext<MyToDoListDbContext>(options =>
                                                             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IDutyRepository,DutyRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IDbContextService,DbContextService>();
         }
 

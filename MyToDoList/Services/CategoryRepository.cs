@@ -1,4 +1,6 @@
-﻿using MyToDoList.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyToDoList.DbContexts;
+using MyToDoList.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,12 @@ namespace MyToDoList.Services
     }
     public class CategoryRepository : ICategoryRepository
     {
-        public IEnumerable<Category> Categories => throw new NotImplementedException();
+        private MyToDoListDbContext _context;
+
+        public CategoryRepository(MyToDoListDbContext context)
+        {
+            _context = context;
+        }
+        public IEnumerable<Category> Categories => _context.Categories.Include(c => c.Duties);
     }
 }

@@ -45,7 +45,9 @@ namespace MyToDoList.Controllers
             var newDuty = new Duty()
             {
                 Content = model.Content,
-                Day = DayForCreate
+                Day = DayForCreate,
+                Category = null
+                
             };
 
             _dutyRepository.AddDuty(newDuty);
