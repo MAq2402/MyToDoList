@@ -15,6 +15,5 @@ namespace MyToDoList.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual List<Duty> Duties { get; set; }
-        public Color Color { get; set; }
     }
 }

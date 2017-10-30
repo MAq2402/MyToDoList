@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyToDoList.Services;
-using MyToDoList.ViewModels;
+using MyToDoList.ViewModels.HomeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

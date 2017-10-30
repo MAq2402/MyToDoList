@@ -10,7 +10,9 @@ namespace MyToDoList.Services
 {
     public interface ICategoryRepository
     {
+        void AddCategory(Category newCategory);
         IEnumerable<Category> Categories { get; }
+        Category GetCategory(int id);
     }
     public class CategoryRepository : ICategoryRepository
     {
@@ -21,5 +23,15 @@ namespace MyToDoList.Services
             _context = context;
         }
         public IEnumerable<Category> Categories => _context.Categories.Include(c => c.Duties);
+
+        public void AddCategory(Category newCategory)
+        {
+            _context.Add(newCategory);
+        }
+
+        public Category GetCategory(int id)
+        {
+            return Categories.FirstOrDefault(x => x.Id==id);
+        }
     }
 }

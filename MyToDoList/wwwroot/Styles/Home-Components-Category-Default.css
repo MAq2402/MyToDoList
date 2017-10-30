@@ -1,4 +1,13 @@
 ﻿body {
-    
-}
 
+}
+.LinkToCategory{
+    
+    color:black;
+}
+    .LinkToCategory:hover {
+        text-decoration: none;
+    }
+.list-group-item:hover {
+    background-color:lightgray;
+}

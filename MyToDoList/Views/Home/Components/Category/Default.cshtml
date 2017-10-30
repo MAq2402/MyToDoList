@@ -6,51 +6,28 @@
 <ul class="list-group">
     @foreach (var category in Model.Categories)
     {
-        <li class="list-group-item">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            @category.Name
-            <span class="badge">@category.Duties.Count</span>
-        </li>
+        <a class="LinkToCategory" asp-action="Index" asp-controller="Category" asp-route-id="@category.Id">
+            <li class="list-group-item">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                @category.Name
+                <span class="badge">@category.Duties.Count</span>
+            </li>
+        </a>
     }
     
 </ul>
-<form method="post" asp-antiforgery="true" class="form-horizontal">
-    <div class="col-sm-10">
+<form method="post" asp-action="AddCategory" asp-controller="Home" asp-antiforgery="true" class="form-horizontal">
+    <div>
         <div class="input-group">
 
             <span class="input-group-btn">
                 <button class="btn btn-danger" type="submit">Dodaj kategorie</button>
             </span>
-            <input id="InputForCategoryName" asp-for="@Model.CategoryName" type="text" class="form-control" placeholder="Nazwa kateogrii">
+            <input id="InputForCategoryName" asp-for="@Model.NewCategoryName" type="text" class="form-control" placeholder="Nazwa kateogrii">
         </div>
 
     </div>
-    <div class="col-sm-2">
-        <div id="SelectListForCategoryColor" class="form-group">
-            <select class="form-control" asp-for="@Model.Color" >
-                @foreach(Color color in Enum.GetValues(typeof(Color)))
-                {
-                    switch((int)color)
-                    {
-                        case 0:
-                        <option value="@color.ToString()">Czerwony</option>
-                            break;
-                        case 1:
-                            <option value="@color.ToString()">Niebieski</option>
-                            break;
-                        case 2:
-                            <option value="@color.ToString()">Zielony</option>
-                            break;
-                        case 3:
-                            <option value="@color.ToString()">Zółty</option>
-                            break;
-                        case 4:
-                            <option value="@color.ToString()">Czarny</option>
-                            break;
-                    }
-
-                }
-            </select>
-        </div>
+    <div asp-validation-summary="All">
     </div>
 </form>
+

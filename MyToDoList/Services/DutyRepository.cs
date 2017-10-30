@@ -13,6 +13,10 @@ namespace MyToDoList.Services
     {
         IEnumerable<Duty> Duties { get; }
         void AddDuty(Duty newDuty);
+
+        Duty GetDuty(int id);
+
+        void RemoveDuty(int id);
     }
     public class DutyRepository:IDutyRepository
     {
@@ -27,7 +31,19 @@ namespace MyToDoList.Services
 
         public void AddDuty(Duty newDuty)
         {
-            _context.Duties.Add(newDuty);
+            _context.Add(newDuty);
+        }
+
+        public void RemoveDuty(int id)
+        {
+            var duty = Duties.FirstOrDefault(x => x.Id == id);
+
+            _context.Remove(duty);
+        }
+
+        public Duty GetDuty(int id)
+        {
+            return Duties.FirstOrDefault(x => x.Id == id);
         }
     }
 }

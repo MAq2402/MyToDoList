@@ -1,4 +1,5 @@
 ﻿using MyToDoList.DbContexts;
+using MyToDoList.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace MyToDoList.Services
     public interface IDbContextService
     {
         void Commit();
+
+        void RemoveCategory(Category category);
     }
     public class DbContextService : IDbContextService
     {
@@ -22,6 +25,11 @@ namespace MyToDoList.Services
         {
 
             _context.SaveChanges();
+        }
+
+        public void RemoveCategory(Category category)
+        {
+            _context.Categories.Remove(category);
         }
     }
 }
