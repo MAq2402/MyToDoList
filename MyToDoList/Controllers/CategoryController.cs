@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyToDoList.Entities;
+using MyToDoList.Enums;
 using MyToDoList.Services;
+using MyToDoList.ViewModels.CategoryViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +27,12 @@ namespace MyToDoList.Controllers
         {
             var category = _categoryRepository.GetCategory(id);
 
-            return View(category);
+            var model = new IndexViewModel()
+            {
+                Category = category
+            };
+
+            return View(model);
         }
         public IActionResult RemoveDuty(string CategoryId,int DutyId)
         {
@@ -54,6 +62,41 @@ namespace MyToDoList.Controllers
             _dbContextService.Commit();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult AddDuty(string StringDay, IndexViewModel model)
+        {
+            Day DayForCreate = Day.Monday;
+
+            foreach(Day day in Enum.GetValues(typeof(Day)))
+            {
+                if(day.ToString()==StringDay)
+                {
+                    DayForCreate = day;
+                    break;
+                }
+            }
+
+            var category = _categoryRepository.GetCategory(Int32.Parse(model.CategoryId));
+
+            if (category == null)
+            {
+                throw new Exception("Nie ma takiej kategorii");
+            }
+
+            var duty = new Duty()
+            {
+                Content = model.NewDutyContent,
+                Category = category,
+                Day = DayForCreate
+            };
+
+            _dutyRepository.AddDuty(duty);
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Category", new { id = model.CategoryId });
         }
 
     }

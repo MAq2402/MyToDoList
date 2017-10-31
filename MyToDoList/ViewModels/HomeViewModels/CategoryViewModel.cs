@@ -13,6 +13,8 @@ namespace MyToDoList.ViewModels.HomeViewModels
         public IEnumerable<Category> Categories { get; set; }
         [Required(ErrorMessage ="Kategoria musi mieć nazwe")]
         public string NewCategoryName { get; set; }
+        public IEnumerable<Duty> Duties { get; set; }
+
 
     }
 }

@@ -5,6 +5,8 @@
   "devDependencies": {
   },
   "dependencies": {
-    "bootstrap": "3.3.7"
+    "bootstrap": "3.3.7",
+    "chart.js": "2.7.1",
+    "jquery": "3.2.1"
   }
 }

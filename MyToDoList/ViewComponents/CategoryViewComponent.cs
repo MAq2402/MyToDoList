@@ -11,15 +11,18 @@ namespace MyToDoList.ViewComponents
     public class CategoryViewComponent:ViewComponent
     {
         private ICategoryRepository _categoryRepository;
+        private IDutyRepository _dutyRepository;
 
-        public CategoryViewComponent(ICategoryRepository categoryRepository)
+        public CategoryViewComponent(ICategoryRepository categoryRepository,IDutyRepository dutyRepository)
         {
             _categoryRepository = categoryRepository;
+            _dutyRepository = dutyRepository;
         }
         public IViewComponentResult Invoke()
         {
             var model = new CategoryViewModel()
             {
+                Duties = _dutyRepository.Duties,
                 Categories = _categoryRepository.Categories
             };
 

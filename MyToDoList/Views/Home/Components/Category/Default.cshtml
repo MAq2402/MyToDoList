@@ -1,6 +1,8 @@
 ﻿@model CategoryViewModel
 <head>
     <link href="~/Styles/Home-Components-Category-Default.css" rel="stylesheet" />
+    <script src="~/node_modules/chart.js/dist/Chart.min.js"></script>
+    
 </head>
 <h1>Kategorie</h1>
 <ul class="list-group">
@@ -30,4 +32,70 @@
     <div asp-validation-summary="All">
     </div>
 </form>
+<h1>Wykresy</h1>
+<canvas id="myChartDuties"></canvas>
+<canvas id="myChartDutiesInCategory"></canvas>
+<script>
+    var ctx = document.getElementById('myChartDuties').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
+            datasets: [{
+                label: "Zadania",
+                backgroundColor: 'rgb(217, 83, 79)',
+                borderColor: 'rgb(212, 63, )',
+                data: [
+                        @Model.Duties.Where(d=>d.Day == Day.Monday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Tuesday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Wednesday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Thursday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Friday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Saturday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Sunday).Count(),
+                ],
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+</script>
+<script>
+    @{
+        //IEnumerable<string> categoryName =
+        string Json = JsonConvert.SerializeObject(new List<string>() {"value1","value2" });
+        
+    }
+    var ctx = document.getElementById('myChartDutiesInCategory').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "Zadania",
+                backgroundColor: 'rgb(217, 83, 79)',
+                borderColor: 'rgb(212, 63, )',
+                data: [
+                        @Model.Duties.Where(d=>d.Day == Day.Monday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Tuesday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Wednesday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Thursday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Friday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Saturday).Count(),
+                        @Model.Duties.Where(d=>d.Day == Day.Sunday).Count(),
+                ],
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+</script>
 

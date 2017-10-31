@@ -1,4 +1,4 @@
-﻿@model Category
+﻿@model MyToDoList.ViewModels.CategoryViewModels.IndexViewModel
 @{
     ViewBag.Title = "Kategoria";
 }
@@ -7,7 +7,7 @@
     <link href="~/Styles/Category-Index.css" rel="stylesheet" />
 </head>
 <div class="container=fluid">
-    <h1>@Model.Name</h1>
+    <h1>@Model.Category.Name</h1>
     <div class="row">
         <div class="col-lg-8">
 
@@ -43,12 +43,13 @@
                         }
                     </div>
                     <div class="panel-body">
-                        @foreach (var duty in Model.Duties.Where(d => d.Day == day))
+                        @foreach (var duty in Model.Category.Duties.Where(d => d.Day == day))
                         {
 
+                           
                             var dict = new Dictionary<string, string>()
                                 {
-                                    {"CategoryId",Model.Id.ToString() },
+                                    {"CategoryId",Model.Category.Id.ToString() },
                                     {"DutyId",duty.Id.ToString() }
 
                                 };
@@ -69,13 +70,14 @@
                             </form>
                         }
                     </div>
-                    <form method="post" asp-action="AddDuty" asp-controller="Home" asp-route-StringDay="@day.ToString()" asp-antiforgery="true">
+                    <form method="post" asp-action="AddDuty" asp-controller="Category" asp-route-StringDay="@day.ToString()" asp-antiforgery="true">
                     <div class="input-group">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Dodaj zadanie</button>
                         </span>
-                        <input asp-for="@Model.Name" type="text" class="form-control">
-                    </div>
+                        <input asp-for="@Model.NewDutyContent" type="text" class="form-control">
+                        <input type="hidden" asp-for="@Model.CategoryId" value="@Model.Category.Id" />
+                     </div>
                     </form>
                 </div>
 
@@ -88,13 +90,13 @@
                         <div class="input-group">
 
                             <span class="input-group-btn">
-                                <button asp-action="RemoveAllDuties" asp-controller="Category" asp-route-id="@Model.Id" class="btn btn-danger BigButton" type="submit">Usuń wszystkie zadania</button>
+                                <button asp-action="RemoveAllDuties" asp-controller="Category" asp-route-id="@Model.Category.Id" class="btn btn-danger BigButton" type="submit">Usuń wszystkie zadania</button>
                             </span>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <span class="input-group-btn ">
-                            <button asp-action="RemoveCategory" asp-controller="Category" asp-route-id="@Model.Id" class="btn btn-danger BigButton" type="submit">Usuń kategorię: @Model.Name</button>
+                            <button asp-action="RemoveCategory" asp-controller="Category" asp-route-id="@Model.Category.Id" class="btn btn-danger BigButton" type="submit">Usuń kategorię: @Model.Category.Name</button>
                         </span>
                     </div>
 
