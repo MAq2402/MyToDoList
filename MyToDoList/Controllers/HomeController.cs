@@ -24,6 +24,7 @@ namespace MyToDoList.Controllers
             _dutyRepository = dutyRepository;
             _dbContextService = dbContextService;
             _categoryRepository = categoryRepository;
+            
         }
         [HttpGet]
         public IActionResult Index()

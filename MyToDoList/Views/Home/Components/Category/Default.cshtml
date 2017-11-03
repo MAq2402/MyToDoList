@@ -1,5 +1,8 @@
 ﻿@model CategoryViewModel
 <head>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
     <link href="~/Styles/Home-Components-Category-Default.css" rel="stylesheet" />
     <script src="~/node_modules/chart.js/dist/Chart.min.js"></script>
     
@@ -45,57 +48,133 @@
         data: {
             labels: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
             datasets: [{
-                label: "Zadania",
+                label: "Liczba zadań w poszczególnych dniach",
                 backgroundColor: 'rgb(217, 83, 79)',
                 borderColor: 'rgb(212, 63, )',
                 data: [
-                        @Model.Duties.Where(d=>d.Day == Day.Monday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Tuesday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Wednesday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Thursday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Friday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Saturday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Sunday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Monday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Tuesday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Wednesday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Thursday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Friday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Saturday).Count(),
+                        @Model.Duties.Where(d => d.Day == Day.Sunday).Count(),
                 ],
             }]
         },
 
         // Configuration options go here
-        options: {}
+        options: {
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                        // OR //
+                        beginAtZero: true   // minimum value will be 0.
+                    }
+                }]
+            }
+        }
     });
 </script>
 <script>
-    @{
-        //IEnumerable<string> categoryName =
-        string Json = JsonConvert.SerializeObject(new List<string>() {"value1","value2" });
-        
-    }
-    var ctx = document.getElementById('myChartDutiesInCategory').getContext('2d');
-    var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'bar',
 
-        // The data for our dataset
-        data: {
-            labels: [],
-            datasets: [{
-                label: "Zadania",
-                backgroundColor: 'rgb(217, 83, 79)',
-                borderColor: 'rgb(212, 63, )',
-                data: [
-                        @Model.Duties.Where(d=>d.Day == Day.Monday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Tuesday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Wednesday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Thursday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Friday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Saturday).Count(),
-                        @Model.Duties.Where(d=>d.Day == Day.Sunday).Count(),
-                ],
+        var LabelArray =[];
+        @{
+
+
+            foreach (var category in Model.Categories)
+            {
+                for(int i = 0;i<category.Name.Length;i++)
+                {
+                    if(category.Name[i]=='ó')
+                    {
+                        category.Name = category.Name.Replace('ó', 'o');
+
+                    }
+                    if (category.Name[i] == 'ś')
+                    {
+
+                        category.Name = category.Name.Replace('ś', 's');
+                    }
+                    if (category.Name[i] == 'ć')
+                    {
+                        category.Name = category.Name.Replace('ć', 'c');
+
+                    }
+                    if (category.Name[i] == 'ż')
+                    {
+                        category.Name = category.Name.Replace('ż', 'z');
+
+                    }
+                    if (category.Name[i] == 'ź')
+                    {
+                        category.Name = category.Name.Replace('ź', 'z');
+
+                    }
+                    if (category.Name[i] == 'ą')
+                    {
+
+                        category.Name = category.Name.Replace('ą', 'a');
+                    }
+                    if (category.Name[i] == 'ę')
+                    {
+
+                        category.Name = category.Name.Replace('ę', 'e');
+                    }
+
+
+
+
+                }
+
+
+             @:LabelArray.push("@category.Name");
+                 
+
+            }
+        }
+        var DataLabel = []
+        @{ 
+            foreach(var category in Model.Categories)
+            {
+                @:DataLabel.push("@category.Duties.Count");
+
+            }
+        }
+
+        var ctx = document.getElementById('myChartDutiesInCategory').getContext('2d');
+        
+                    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+                        type: 'bar',
+
+                        // The data for our dataset
+                        data: {
+
+                            labels: LabelArray,
+                            datasets: [{
+                label: "Liczba zadań w poszczególnych kategoriach",
+                                backgroundColor: 'rgb(217, 83, 79)',
+                                borderColor: 'rgb(212, 63, )',
+                                data: DataLabel,
             }]
         },
 
         // Configuration options go here
-        options: {}
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    display: true,
+                                    ticks: {
+                                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                        // OR //
+                                        beginAtZero: true   // minimum value will be 0.
+                                    }
+                                }]
+                            }
+                        }
     });
 </script>
 
