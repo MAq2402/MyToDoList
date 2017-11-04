@@ -13,5 +13,6 @@ namespace MyToDoList.ViewModels.CategoryViewModels
         public string NewDutyContent { get; set; }
 
         public string CategoryId { get; set; }
+        public string CategoryNewName { get; set; }
     }
 }

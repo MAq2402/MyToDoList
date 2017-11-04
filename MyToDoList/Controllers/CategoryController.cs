@@ -98,6 +98,20 @@ namespace MyToDoList.Controllers
 
             return RedirectToAction("Index", "Category", new { id = model.CategoryId });
         }
+        public IActionResult ChangeCategoryName(int id,IndexViewModel model)
+        {
+            var category = _categoryRepository.GetCategory(id);
 
+            if(category==null)
+            {
+                throw new Exception("ChangeCategoryName brak takiej kategorii");
+            }
+
+            category.Name = model.CategoryNewName;
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Category",new { id = id });
+        }
     }
 }

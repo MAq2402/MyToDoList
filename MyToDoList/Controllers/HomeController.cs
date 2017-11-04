@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Data.Edm.Library;
 using MyToDoList.Entities;
 using MyToDoList.Enums;
+using MyToDoList.Models;
 using MyToDoList.Services;
 using MyToDoList.ViewModels.HomeViewModels;
 
@@ -27,12 +29,14 @@ namespace MyToDoList.Controllers
             
         }
         [HttpGet]
+        [ImportModelState]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+      
         public IActionResult AddDuty(string StringDay,DayViewModel model)
         {
 
@@ -70,8 +74,13 @@ namespace MyToDoList.Controllers
             return RedirectToAction("Index","Home");
         }
         [HttpPost]
+        [ExportModelState]
         public IActionResult AddCategory(CategoryViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var newCategory = new Category()
             {
                 Name = model.NewCategoryName

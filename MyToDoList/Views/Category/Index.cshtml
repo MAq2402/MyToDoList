@@ -7,7 +7,12 @@
     <link href="~/Styles/Category-Index.css" rel="stylesheet" />
 </head>
 <div class="container=fluid">
-    <h1>@Model.Category.Name</h1>
+    <h1>
+        <a asp-action="Index" asp-controller="Home">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+        </a>
+        @Model.Category.Name
+    </h1>
     <div class="row">
         <div class="col-lg-8">
 
@@ -99,7 +104,14 @@
                             <button asp-action="RemoveCategory" asp-controller="Category" asp-route-id="@Model.Category.Id" class="btn btn-danger BigButton" type="submit">Usuń kategorię: @Model.Category.Name</button>
                         </span>
                     </div>
-
+                    <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input asp-for="@Model.CategoryNewName"   type="text" class="form-control" placeholder="Nowa nazwa">
+                                    <span class="input-group-btn">
+                                        <button asp-action="ChangeCategoryName" asp-controller="Category"  asp-route-id="@Model.Category.Id" class="btn btn-danger" type="submit">Zmień nazwe</button>
+                                    </span>           
+                                </div><!-- /input-group -->
+                        </div>
                 </div>
             </div>
         </form>
