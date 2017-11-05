@@ -32,13 +32,24 @@ namespace MyToDoList.Controllers
         [ImportModelState]
         public IActionResult Index()
         {
-            return View();
+            var model = new IndexViewModel()
+            {
+                Duties = _dutyRepository.Duties,
+                Categories = _categoryRepository.Categories
+            };
+            return View(model);
+
         }
 
         [HttpPost]
+        [ExportModelState]
       
         public IActionResult AddDuty(string StringDay,DayViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             Day DayForCreate=Day.Monday;
 
@@ -55,7 +66,9 @@ namespace MyToDoList.Controllers
 
             if(category==null)
             {
-                throw new Exception("Nie ma takiej kategorii");
+
+                ModelState.AddModelError("", "Każde zadanie musi przynależeć do kategorii. Stwórz nową kategorię, a następnie dodaj do niej zadanie.");
+                return RedirectToAction("Index", "Home");
             }
 
             var newDuty = new Duty()

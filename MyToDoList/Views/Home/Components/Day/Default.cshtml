@@ -40,7 +40,7 @@
                 <div class="duty">
                     <p>
                         <span>@duty.Content</span>
-                        <button type="submit" class="btn btn-default InvisibleButton" asp-action="RemoveDuty" asp-controller="Home">
+                        <button type="submit" class="btn btn-default InvisibleButton" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                         </button>
                         <div class="progress">
@@ -75,8 +75,6 @@
                 </div>
             </form>
         </div>
-
          </div>
     </div>
-
 }
