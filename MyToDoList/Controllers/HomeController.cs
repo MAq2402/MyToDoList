@@ -19,25 +19,37 @@ namespace MyToDoList.Controllers
     {
         private IDbContextService _dbContextService;
         private ICategoryRepository _categoryRepository;
+        private ICurrentWeekService _currentWeekService;
         private IDutyRepository _dutyRepository;
 
-        public HomeController(IDutyRepository dutyRepository,ICategoryRepository categoryRepository,IDbContextService dbContextService)
+        public HomeController(IDutyRepository dutyRepository,
+            ICategoryRepository categoryRepository,
+            IDbContextService dbContextService,
+            ICurrentWeekService currentWeekService)
         {
             _dutyRepository = dutyRepository;
             _dbContextService = dbContextService;
             _categoryRepository = categoryRepository;
+            _currentWeekService = currentWeekService;
             
         }
         [HttpGet]
         [ImportModelState]
         public IActionResult Index()
         {
-            var model = new IndexViewModel()
+            var currentWeek = _currentWeekService.GetCurrentWeek();
+
+            if(currentWeek==null)
             {
-                Duties = _dutyRepository.Duties,
-                Categories = _categoryRepository.Categories
-            };
-            return View(model);
+
+            }
+
+            if (DateTime.Today.DayOfWeek==DayOfWeek.Monday)
+            {
+                
+            }
+
+            return View();
 
         }
 
@@ -46,7 +58,16 @@ namespace MyToDoList.Controllers
       
         public IActionResult AddDuty(string StringDay,DayViewModel model)
         {
-            if(!ModelState.IsValid)
+            var category = _categoryRepository.GetCategory(model.DutyCategoryId);
+
+            if (category == null)
+            {
+
+                ModelState.AddModelError("", "Każde zadanie musi przynależeć do kategorii. Stwórz nową kategorię, a następnie dodaj do niej zadanie.");
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -62,14 +83,7 @@ namespace MyToDoList.Controllers
                 }
             }
 
-            var category = _categoryRepository.GetCategory(model.DutyCategoryId);
-
-            if(category==null)
-            {
-
-                ModelState.AddModelError("", "Każde zadanie musi przynależeć do kategorii. Stwórz nową kategorię, a następnie dodaj do niej zadanie.");
-                return RedirectToAction("Index", "Home");
-            }
+       
 
             var newDuty = new Duty()
             {

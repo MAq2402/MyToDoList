@@ -13,6 +13,9 @@ namespace MyToDoList.Entities
         public Day Day { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public int CurrentWeekId { get; set; }
+        public CurrentWeek CurrentWeek { get; set; }
+        
 
 
     }
