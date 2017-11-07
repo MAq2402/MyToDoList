@@ -37,10 +37,21 @@ namespace MyToDoList.Controllers
         [ImportModelState]
         public IActionResult Index()
         {
-            var currentWeek = _currentWeekService.GetCurrentWeek();
+            CurrentWeek currentWeek = _currentWeekService.GetCurrentWeek();
 
             if(currentWeek==null)
             {
+                var mondayDate = DateTime.Today;
+                mondayDate = mondayDate.AddDays(-(int)DateTime.Today.DayOfWeek);
+
+                currentWeek = new CurrentWeek()
+                {
+                    MondayDate = mondayDate
+                };
+
+                _currentWeekService.AddCurrentWeek(currentWeek);
+
+                _dbContextService.Commit();
 
             }
 
@@ -49,7 +60,12 @@ namespace MyToDoList.Controllers
                 
             }
 
-            return View();
+            var model = new IndexViewModel()
+            {
+                CurrentWeek = currentWeek
+            };
+
+            return View(model);
 
         }
 

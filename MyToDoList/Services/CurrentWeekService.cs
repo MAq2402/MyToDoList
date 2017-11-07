@@ -11,6 +11,7 @@ namespace MyToDoList.Services
     public interface ICurrentWeekService
     {
         CurrentWeek GetCurrentWeek();
+        void AddCurrentWeek(CurrentWeek currentWeek);
     }
     public class CurrentWeekService:ICurrentWeekService
     {
@@ -21,9 +22,15 @@ namespace MyToDoList.Services
             _context = context;
         }
 
+        public void AddCurrentWeek(CurrentWeek currentWeek)
+        {
+
+            _context.Add(currentWeek);
+        }
+
         public CurrentWeek GetCurrentWeek()
         {
-            return _context.CurruntWeeks.Include(cw => cw.DoneDuties).First();
+            return _context.CurrentWeeks.Include(cw => cw.DoneDuties).First();
         }
     }
 }

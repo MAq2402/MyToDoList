@@ -9,11 +9,6 @@ namespace MyToDoList.ViewModels.HomeViewModels
 {
     public class IndexViewModel
     {
-        public IEnumerable<Duty> Duties { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
-
-        [Required(ErrorMessage = "Twoje zadanie nie zawiera żadnej treści!"), MaxLength(20, ErrorMessage = "Maksymalna długość treści twojego zadania wynosi 20 znaków!")]
-        public string Content { get; set; }
-        public int DutyCategoryId { get; set; }
+        public CurrentWeek CurrentWeek { get; set; }
     }
 }
