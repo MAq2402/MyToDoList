@@ -20,17 +20,20 @@ namespace MyToDoList.Controllers
         private IDbContextService _dbContextService;
         private ICategoryRepository _categoryRepository;
         private ICurrentWeekService _currentWeekService;
+        private IAmmountOfDoneDutiesArchiveRepository _ammountOfDoneDutiesArchiveRepository;
         private IDutyRepository _dutyRepository;
 
         public HomeController(IDutyRepository dutyRepository,
             ICategoryRepository categoryRepository,
             IDbContextService dbContextService,
-            ICurrentWeekService currentWeekService)
+            ICurrentWeekService currentWeekService,
+            IAmmountOfDoneDutiesArchiveRepository ammountOfDoneDutiesArchiveRepository)
         {
             _dutyRepository = dutyRepository;
             _dbContextService = dbContextService;
             _categoryRepository = categoryRepository;
             _currentWeekService = currentWeekService;
+            _ammountOfDoneDutiesArchiveRepository = ammountOfDoneDutiesArchiveRepository;
             
         }
         [HttpGet]
@@ -42,10 +45,13 @@ namespace MyToDoList.Controllers
             if(currentWeek==null)
             {
                 var mondayDate = DateTime.Today;
-                mondayDate = mondayDate.AddDays(-(int)DateTime.Today.DayOfWeek);
+                mondayDate = mondayDate.AddDays(-(int)DateTime.Today.DayOfWeek+1);
+
+                var ammountOfDoneDutiesArchive = new AmmountOfDoneDutiesArchive();
 
                 currentWeek = new CurrentWeek()
                 {
+                    AmmountOfDoneDutiesArchive = ammountOfDoneDutiesArchive,
                     MondayDate = mondayDate
                 };
 
@@ -57,7 +63,11 @@ namespace MyToDoList.Controllers
 
             if (DateTime.Today.DayOfWeek==DayOfWeek.Monday)
             {
-                
+                _ammountOfDoneDutiesArchiveRepository.RemoveArchive();
+
+                //wszystkie zadania do zaleglych!!
+
+
             }
 
             var model = new IndexViewModel()
@@ -143,6 +153,21 @@ namespace MyToDoList.Controllers
             _dbContextService.Commit();
 
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult ExecuteDuty(int id)
+        {
+            var duty = _dutyRepository.GetDuty(id);
+
+            _ammountOfDoneDutiesArchiveRepository.AddDoneDuty(duty);
+
+            _dutyRepository.RemoveDuty(id);
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Home");
+
+
         }
 
 

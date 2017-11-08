@@ -9,7 +9,8 @@ namespace MyToDoList.Entities
     {
         public int Id { get; set; }
         public DateTime MondayDate { get; set; }
+        public int AmmountOfDoneDutiesArchiveId { get; set; }
+        public AmmountOfDoneDutiesArchive AmmountOfDoneDutiesArchive { get; set; }
 
-        public virtual IEnumerable<Duty> DoneDuties { get; set; }
     }
 }

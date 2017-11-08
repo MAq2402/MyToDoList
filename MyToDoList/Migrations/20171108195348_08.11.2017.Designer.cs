@@ -12,9 +12,10 @@ using System;
 namespace MyToDoList.Migrations
 {
     [DbContext(typeof(MyToDoListDbContext))]
-    partial class MyToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171108195348_08.11.2017")]
+    partial class _08112017
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -12,6 +12,8 @@ namespace MyToDoList.Services
     {
         CurrentWeek GetCurrentWeek();
         void AddCurrentWeek(CurrentWeek currentWeek);
+
+        void RemoveCurrentWeek();
     }
     public class CurrentWeekService:ICurrentWeekService
     {
@@ -30,7 +32,16 @@ namespace MyToDoList.Services
 
         public CurrentWeek GetCurrentWeek()
         {
-            return _context.CurrentWeeks.Include(cw => cw.DoneDuties).First();
+            if(!_context.CurrentWeeks.Any())
+            {
+                return null;
+            }
+            return _context.CurrentWeeks.Include(cw => cw.AmmountOfDoneDutiesArchive).First();
+        }
+
+        public void RemoveCurrentWeek()
+        {
+            _context.CurrentWeeks.Remove(_context.CurrentWeeks.First());
         }
     }
 }
