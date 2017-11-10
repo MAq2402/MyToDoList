@@ -14,6 +14,7 @@ namespace MyToDoList.ViewModels.HomeViewModels
         [Required(ErrorMessage ="Kategoria musi mieć nazwe!"),MaxLength(20,ErrorMessage ="Długośc nazwy twojej kategorii to maksymalnie 20 znaków!")]
         public string NewCategoryName { get; set; }
         public IEnumerable<Duty> Duties { get; set; }
+        public AmmountOfDoneDutiesArchive Archive { get; set; }
 
 
     }

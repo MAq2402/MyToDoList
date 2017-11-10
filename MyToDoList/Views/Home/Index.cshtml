@@ -12,11 +12,19 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-8">
-              @await Component.InvokeAsync("Day");
-        </div>
+            <div id="OverDueDuties" class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Zaległe</h3>
+                    </div>
+                <div class="panel-body">
+
+                </div>
+                </div>
+                    @await Component.InvokeAsync("Day");
+                </div>
                 <div class="col-sm-4">
                     @await Component.InvokeAsync("Category")
-                </div> 
-      
+                </div>
+
+            </div>
         </div>
-    </div>

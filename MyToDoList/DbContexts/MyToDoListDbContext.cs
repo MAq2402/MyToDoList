@@ -20,5 +20,6 @@ namespace MyToDoList.DbContexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<CurrentWeek> CurrentWeeks { get; set; }
         public DbSet<AmmountOfDoneDutiesArchive> AmmountOfDoneDutiesArchives { get; set; }
+        public DbSet<OverdueDuty> OverdueDuties { get; set; }
     }
 }

@@ -9,6 +9,10 @@
 .glyphicon-ok {
     color: #c9302c; 
 }
+.glyphicon-remove {
+    color: #c9302c;
+    margin-right:5px;
+}
 .InvisibleButton{
     color:transparent;
     background:transparent;

@@ -32,6 +32,7 @@ namespace MyToDoList
             services.AddScoped<IDbContextService,DbContextService>();
             services.AddScoped<ICurrentWeekService, CurrentWeekService>();
             services.AddScoped<IAmmountOfDoneDutiesArchiveRepository, AmmountOfDoneDutiesArchiveRepository>();
+            services.AddScoped<IOverdueDutyRepository, OverdueDutyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

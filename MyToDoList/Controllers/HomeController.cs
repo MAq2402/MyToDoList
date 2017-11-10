@@ -21,14 +21,17 @@ namespace MyToDoList.Controllers
         private ICategoryRepository _categoryRepository;
         private ICurrentWeekService _currentWeekService;
         private IAmmountOfDoneDutiesArchiveRepository _ammountOfDoneDutiesArchiveRepository;
+        private IOverdueDutyRepository _overdueDutyRepository;
         private IDutyRepository _dutyRepository;
 
         public HomeController(IDutyRepository dutyRepository,
             ICategoryRepository categoryRepository,
             IDbContextService dbContextService,
             ICurrentWeekService currentWeekService,
-            IAmmountOfDoneDutiesArchiveRepository ammountOfDoneDutiesArchiveRepository)
+            IAmmountOfDoneDutiesArchiveRepository ammountOfDoneDutiesArchiveRepository,
+            IOverdueDutyRepository overdueDutyRepository)
         {
+            _overdueDutyRepository = overdueDutyRepository;
             _dutyRepository = dutyRepository;
             _dbContextService = dbContextService;
             _categoryRepository = categoryRepository;
@@ -49,6 +52,8 @@ namespace MyToDoList.Controllers
 
                 var ammountOfDoneDutiesArchive = new AmmountOfDoneDutiesArchive();
 
+                _ammountOfDoneDutiesArchiveRepository.AddNewArchive(ammountOfDoneDutiesArchive);
+
                 currentWeek = new CurrentWeek()
                 {
                     AmmountOfDoneDutiesArchive = ammountOfDoneDutiesArchive,
@@ -63,11 +68,27 @@ namespace MyToDoList.Controllers
 
             if (DateTime.Today.DayOfWeek==DayOfWeek.Monday)
             {
-                _ammountOfDoneDutiesArchiveRepository.RemoveArchive();
+                _ammountOfDoneDutiesArchiveRepository.ResetArchive();
 
-                //wszystkie zadania do zaleglych!!
+                var duties = _dutyRepository.Duties;
+                foreach(var duty in duties)
+                {
+                    var overdueDuty = new OverdueDuty()
+                    {
+                        Content = duty.Content,
+                        Category = duty.Category,
+                        CategoryId = duty.CategoryId
+                    };
+
+                    _overdueDutyRepository.AddOverdueDuty(overdueDuty);
 
 
+                    _dutyRepository.RemoveDuty(duty.Id);
+                }
+
+                currentWeek.MondayDate = DateTime.Today;
+
+                _dbContextService.Commit();
             }
 
             var model = new IndexViewModel()
@@ -166,10 +187,6 @@ namespace MyToDoList.Controllers
             _dbContextService.Commit();
 
             return RedirectToAction("Index", "Home");
-
-
         }
-
-
     }
 }

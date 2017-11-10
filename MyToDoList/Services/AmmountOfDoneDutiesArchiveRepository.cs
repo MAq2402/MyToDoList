@@ -11,6 +11,9 @@ namespace MyToDoList.Services
     {
         void AddDoneDuty(Duty duty);
         void RemoveArchive();
+        void AddNewArchive(AmmountOfDoneDutiesArchive newArchive);
+        void ResetArchive();
+        AmmountOfDoneDutiesArchive GetArchive();
     }
     public class AmmountOfDoneDutiesArchiveRepository : IAmmountOfDoneDutiesArchiveRepository
     {
@@ -49,9 +52,39 @@ namespace MyToDoList.Services
             }
         }
 
+        public void AddNewArchive(AmmountOfDoneDutiesArchive newArchive)
+        {
+            _context.Add(newArchive);
+        }
+
+        public AmmountOfDoneDutiesArchive GetArchive()
+        {
+           return  _context.AmmountOfDoneDutiesArchives.FirstOrDefault();
+        }
+
         public void RemoveArchive()
         {
             _context.AmmountOfDoneDutiesArchives.Remove(_context.AmmountOfDoneDutiesArchives.First());
+        }
+
+        public void ResetArchive()
+        {
+            var archive = _context.AmmountOfDoneDutiesArchives.FirstOrDefault();
+
+            if(archive==null)
+            {
+                throw new Exception("No archive");
+            }
+
+            archive.MondayDoneDuties = 0;
+            archive.TuesdayDoneDuties = 0;
+            archive.WednesdayDoneDuties = 0;
+            archive.ThursdayDoneDuties = 0;
+            archive.FridayDoneDuties = 0;
+            archive.SaturdayDoneDuties = 0;
+            archive.SundayDoneDuties = 0;
+
+
         }
     }
 }

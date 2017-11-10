@@ -35,7 +35,9 @@
 </form>
 <h1>Wykresy</h1>
 <canvas id="myChartDuties"></canvas>
+<canvas id="myChartDutiesDone"></canvas>
 <canvas id="myChartDutiesInCategory"></canvas>
+
 <script>
     var ctx = document.getElementById('myChartDuties').getContext('2d');
     var chart = new Chart(ctx, {
@@ -46,7 +48,7 @@
         data: {
             labels: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
             datasets: [{
-                label: "Liczba zadań w poszczególnych dniach",
+                label: "Liczba zadań w dniach",
                 backgroundColor: 'rgb(217, 83, 79)',
                 borderColor: 'rgb(212, 63, )',
                 data: [
@@ -151,7 +153,7 @@
 
                             labels: LabelArray,
                             datasets: [{
-                label: "Liczba zadań w poszczególnych kategoriach",
+                label: "Liczba zadań w kategoriach",
                                 backgroundColor: 'rgb(217, 83, 79)',
                                 borderColor: 'rgb(212, 63, )',
                                 data: DataLabel,
@@ -171,6 +173,46 @@
                                 }]
                             }
                         }
+    });
+</script>
+<script>
+    var ctx = document.getElementById('myChartDutiesDone').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
+            datasets: [{
+                label: "Liczba wykonanych zadań w dniach",
+                backgroundColor: 'rgb(217, 83, 79)',
+                borderColor: 'rgb(212, 63, )',
+                data: [
+                        @Model.Archive.MondayDoneDuties,
+                        @Model.Archive.TuesdayDoneDuties,
+                        @Model.Archive.WednesdayDoneDuties,
+                        @Model.Archive.ThursdayDoneDuties,
+                        @Model.Archive.FridayDoneDuties,
+                        @Model.Archive.SaturdayDoneDuties,
+                        @Model.Archive.SundayDoneDuties,
+                ],
+            }]
+        },
+
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                        // OR //
+                        beginAtZero: true   // minimum value will be 0.
+                    }
+                }]
+            }
+        }
     });
 </script>
 
