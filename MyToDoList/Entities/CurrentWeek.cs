@@ -8,7 +8,7 @@ namespace MyToDoList.Entities
     public class CurrentWeek
     {
         public int Id { get; set; }
-        public DateTime MondayDate { get; set; }
+        public DateTime Date { get; set; }
         public int AmmountOfDoneDutiesArchiveId { get; set; }
         public AmmountOfDoneDutiesArchive AmmountOfDoneDutiesArchive { get; set; }
 

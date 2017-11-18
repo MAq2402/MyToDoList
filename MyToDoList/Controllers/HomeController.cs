@@ -9,6 +9,7 @@ using MyToDoList.ViewModels.HomeViewModels;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,7 +58,7 @@ namespace MyToDoList.Controllers
                 currentWeek = new CurrentWeek()
                 {
                     AmmountOfDoneDutiesArchive = ammountOfDoneDutiesArchive,
-                    MondayDate = mondayDate
+                    Date = mondayDate
                 };
 
                 _currentWeekService.AddCurrentWeek(currentWeek);
@@ -66,7 +67,7 @@ namespace MyToDoList.Controllers
 
             }
 
-            if (DateTime.Today.DayOfWeek==DayOfWeek.Monday)
+            if (!DoesDateLiesInCurrentWeek(currentWeek.Date))
             {
                 _ammountOfDoneDutiesArchiveRepository.ResetArchive();
 
@@ -86,14 +87,15 @@ namespace MyToDoList.Controllers
                     _dutyRepository.RemoveDuty(duty.Id);
                 }
 
-                currentWeek.MondayDate = DateTime.Today;
+                currentWeek.Date = DateTime.Today;
 
                 _dbContextService.Commit();
             }
 
             var model = new IndexViewModel()
             {
-                CurrentWeek = currentWeek
+                CurrentWeek = currentWeek,
+                OverdueDuties = _overdueDutyRepository.OverdueDuties
             };
 
             return View(model);
@@ -129,8 +131,6 @@ namespace MyToDoList.Controllers
                     break;
                 }
             }
-
-       
 
             var newDuty = new Duty()
             {
@@ -188,5 +188,39 @@ namespace MyToDoList.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        [HttpPost]
+        public IActionResult ExecuteOverdueDuty(int id)
+        {
+            var duty = _overdueDutyRepository.GetOverdueDuty(id);
+
+            _ammountOfDoneDutiesArchiveRepository.AddDoneOverdueDuty();
+
+            //POPRAWCIE LINIJKI PONIZEJ
+            _dutyRepository.RemoveDuty(id);
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Home");
+        }
+        bool DoesDateLiesInCurrentWeek(DateTime date)
+        { 
+            DateTime startOfWeek = DateTime.Now;
+
+            while(startOfWeek.DayOfWeek!= DayOfWeek.Monday)
+            {
+                startOfWeek = startOfWeek.AddDays(-1);
+            }
+
+            DateTime endOfWeek = startOfWeek.AddDays(6);
+
+            if(date>=startOfWeek&&date<=endOfWeek)
+            {
+                return true;
+            }
+            return false;
+            
+        }
+    
     }
+
 }

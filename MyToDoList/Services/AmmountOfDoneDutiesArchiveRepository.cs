@@ -10,6 +10,7 @@ namespace MyToDoList.Services
     public interface IAmmountOfDoneDutiesArchiveRepository
     {
         void AddDoneDuty(Duty duty);
+        void AddDoneOverdueDuty();
         void RemoveArchive();
         void AddNewArchive(AmmountOfDoneDutiesArchive newArchive);
         void ResetArchive();
@@ -25,9 +26,14 @@ namespace MyToDoList.Services
         }
         public void AddDoneDuty(Duty duty)
         {
-            var ammountOfDoneDutiesArchive = _context.AmmountOfDoneDutiesArchives.First();
+            var ammountOfDoneDutiesArchive = GetArchive();
 
-            switch((int)duty.Day)
+            if (ammountOfDoneDutiesArchive == null)
+            {
+                throw new Exception("Nie ma zadnego archiwum");
+            }
+
+            switch ((int)duty.Day)
             {
                 case 1:  ammountOfDoneDutiesArchive.MondayDoneDuties += 1;
                     break;
@@ -48,6 +54,41 @@ namespace MyToDoList.Services
                     break;
                 case 7:
                     ammountOfDoneDutiesArchive.SundayDoneDuties += 1;
+                    break;
+            }
+        }
+
+        public void AddDoneOverdueDuty()
+        {
+            var ammountOfDoneDutiesArchive = GetArchive();
+
+            if(ammountOfDoneDutiesArchive == null)
+            {
+                throw new Exception("Nie ma zadnego archiwum");
+            }
+
+            switch((int)DateTime.Now.DayOfWeek)
+            {
+                case 0:
+                    ammountOfDoneDutiesArchive.SundayDoneDuties += 1;
+                    break;
+                case 1:
+                    ammountOfDoneDutiesArchive.MondayDoneDuties += 1;
+                    break;
+                case 2:
+                    ammountOfDoneDutiesArchive.TuesdayDoneDuties += 1;
+                    break;
+                case 3:
+                    ammountOfDoneDutiesArchive.WednesdayDoneDuties += 1;
+                    break;
+                case 4:
+                    ammountOfDoneDutiesArchive.ThursdayDoneDuties += 1;
+                    break;
+                case 5:
+                    ammountOfDoneDutiesArchive.FridayDoneDuties += 1;
+                    break;
+                case 6:
+                    ammountOfDoneDutiesArchive.SaturdayDoneDuties += 1;
                     break;
             }
         }

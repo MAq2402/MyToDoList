@@ -12,9 +12,10 @@ using System;
 namespace MyToDoList.Migrations
 {
     [DbContext(typeof(MyToDoListDbContext))]
-    partial class MyToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171118145632_18.11.2017")]
+    partial class _18112017
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +65,7 @@ namespace MyToDoList.Migrations
 
                     b.Property<int>("AmmountOfDoneDutiesArchiveId");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("MondayDate");
 
                     b.HasKey("Id");
 
@@ -126,7 +127,7 @@ namespace MyToDoList.Migrations
             modelBuilder.Entity("MyToDoList.Entities.OverdueDuty", b =>
                 {
                     b.HasOne("MyToDoList.Entities.Category", "Category")
-                        .WithMany("OverdueDuties")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

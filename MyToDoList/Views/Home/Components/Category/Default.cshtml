@@ -11,11 +11,12 @@
 <ul class="list-group">
     @foreach (var category in Model.Categories)
     {
+        var NumberOfCategoryDuties = category.OverdueDuties.Count + category.Duties.Count;
         <a class="LinkToCategory" asp-action="Index" asp-controller="Category" asp-route-id="@category.Id">
             <li class="list-group-item">
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 @category.Name
-                <span class="badge">@category.Duties.Count</span>
+                <span class="badge">@NumberOfCategoryDuties</span>
             </li>
         </a>
     }

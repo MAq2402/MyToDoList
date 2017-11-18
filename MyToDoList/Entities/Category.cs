@@ -15,5 +15,6 @@ namespace MyToDoList.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual List<Duty> Duties { get; set; }
+        public virtual List<OverdueDuty> OverdueDuties { get; set; }
     }
 }

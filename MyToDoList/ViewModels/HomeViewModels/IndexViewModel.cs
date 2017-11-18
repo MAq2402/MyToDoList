@@ -10,5 +10,6 @@ namespace MyToDoList.ViewModels.HomeViewModels
     public class IndexViewModel
     {
         public CurrentWeek CurrentWeek { get; set; }
+        public IEnumerable<OverdueDuty> OverdueDuties { get; set; }
     }
 }
