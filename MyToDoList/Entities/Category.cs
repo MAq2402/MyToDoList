@@ -11,6 +11,7 @@ namespace MyToDoList.Entities
         public Category()
         {
             Duties = new List<Duty>();
+            OverdueDuties = new List<OverdueDuty>();
         }
         public int Id { get; set; }
         public string Name { get; set; }

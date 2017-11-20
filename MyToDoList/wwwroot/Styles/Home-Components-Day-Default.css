@@ -11,15 +11,11 @@
 }
 .glyphicon-remove {
     color: #c9302c;
-    margin-right:5px;
 }
 .InvisibleButton{
     color:transparent;
     background:transparent;
     border:none;
-    float:right;
-    margin-right:0px;
-    padding:0px 0px 0px 0px;
 
 }
 .progress{

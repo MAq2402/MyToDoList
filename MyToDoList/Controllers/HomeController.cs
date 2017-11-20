@@ -196,7 +196,16 @@ namespace MyToDoList.Controllers
             _ammountOfDoneDutiesArchiveRepository.AddDoneOverdueDuty();
 
             //POPRAWCIE LINIJKI PONIZEJ
-            _dutyRepository.RemoveDuty(id);
+            _overdueDutyRepository.RemoveOverdueDuty(id);
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult RemoveOverdueDuty(int id)
+        {
+            _overdueDutyRepository.RemoveOverdueDuty(id);
 
             _dbContextService.Commit();
 

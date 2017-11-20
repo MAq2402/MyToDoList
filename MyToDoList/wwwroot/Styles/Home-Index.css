@@ -7,17 +7,13 @@
     margin-top: 10px;
 
 }
-    #ValSum > ul {
+#ValSum > ul {
         list-style-type: none;
 
         font-size: 20px;
         color: #ffc107;
     }
 body {
-}
-
-.duties {
-    margin-bottom: 10px;
 }
 
 .glyphicon-ok {
@@ -28,19 +24,11 @@ body {
     color: transparent;
     background: transparent;
     border: none;
-    float: right;
-    margin-right: 0px;
-    padding: 0px 0px 0px 0px;
 }
-
-.progress {
-    margin: 0px 0px 0px 0px;
-    height: 1px;
+.panel-body{
+    padding-bottom:0px;
 }
-
-.progress-bar {
-    width: 100%;
-    height: 1px;
-    background-color: #ebccd1;
-    margin-bottom: 1px;
+.panel-footer
+{
+    padding-top:0px;
 }

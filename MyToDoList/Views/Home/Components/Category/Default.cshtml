@@ -11,7 +11,7 @@
 <ul class="list-group">
     @foreach (var category in Model.Categories)
     {
-        var NumberOfCategoryDuties = category.OverdueDuties.Count + category.Duties.Count;
+        var NumberOfCategoryDuties = category.OverdueDuties.Count() + category.Duties.Count();
         <a class="LinkToCategory" asp-action="Index" asp-controller="Category" asp-route-id="@category.Id">
             <li class="list-group-item">
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -136,9 +136,10 @@
         }
         var DataLabel = []
         @{ 
-            foreach(var category in Model.Categories)
+            foreach (var category in Model.Categories)
             {
-                @:DataLabel.push("@category.Duties.Count");
+                var NumberOfCategoryDuties = category.OverdueDuties.Count() + category.Duties.Count();
+                @:DataLabel.push("@NumberOfCategoryDuties");
 
             }
         }
