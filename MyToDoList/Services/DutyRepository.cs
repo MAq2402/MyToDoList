@@ -16,7 +16,7 @@ namespace MyToDoList.Services
 
         Duty GetDuty(int id);
 
-        void RemoveDuty(int id);
+        void RemoveDuty(Duty duty);
     }
     public class DutyRepository:IDutyRepository
     {
@@ -34,10 +34,8 @@ namespace MyToDoList.Services
             _context.Add(newDuty);
         }
 
-        public void RemoveDuty(int id)
+        public void RemoveDuty(Duty duty)
         {
-            var duty = Duties.FirstOrDefault(x => x.Id == id);
-
             _context.Remove(duty);
         }
 

@@ -13,7 +13,7 @@ namespace MyToDoList.Services
         void AddOverdueDuty(OverdueDuty overdueDuty);
         IEnumerable<OverdueDuty> OverdueDuties { get; }
         OverdueDuty GetOverdueDuty(int id);
-        void RemoveOverdueDuty(int id);
+        void RemoveOverdueDuty(OverdueDuty duty);
     }
     public class OverdueDutyRepository : IOverdueDutyRepository
     {
@@ -36,15 +36,9 @@ namespace MyToDoList.Services
             return _context.OverdueDuties.FirstOrDefault(od => od.Id == id);
         }
 
-        public void RemoveOverdueDuty(int id)
+        public void RemoveOverdueDuty(OverdueDuty overdueDuty)
         {
-            var DutyToRemove = GetOverdueDuty(id);
-
-            if(DutyToRemove==null)
-            {
-                throw new Exception("Nie ma takiego zaleglego zadania");
-            }
-            _context.OverdueDuties.Remove(DutyToRemove);
+            _context.OverdueDuties.Remove(overdueDuty);
         }
     }
 }

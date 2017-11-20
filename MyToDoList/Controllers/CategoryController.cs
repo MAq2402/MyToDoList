@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyToDoList.Entities;
 using MyToDoList.Enums;
+using MyToDoList.Models;
 using MyToDoList.Services;
 using MyToDoList.ViewModels.CategoryViewModels;
 using System;
@@ -23,9 +24,16 @@ namespace MyToDoList.Controllers
             _dutyRepository = dutyRepository;
             _categoryRepository = categoryRepository;
         }
+        [HttpGet]
+        [ImportModelState]
         public IActionResult Index(int id)
         {
             var category = _categoryRepository.GetCategory(id);
+
+            if(category==null)
+            {
+                throw new Exception("No such category");
+            }
 
             var model = new IndexViewModel()
             {
@@ -34,17 +42,31 @@ namespace MyToDoList.Controllers
 
             return View(model);
         }
+        [HttpPost]
         public IActionResult RemoveDuty(string CategoryId,int DutyId)
         {
-            _dutyRepository.RemoveDuty(DutyId);
+            var duty = _dutyRepository.GetDuty(DutyId);
+
+            if(duty==null)
+            {
+                throw new Exception("No such duty");
+            }
+
+            _dutyRepository.RemoveDuty(duty);
 
             _dbContextService.Commit();
 
             return RedirectToAction("Index", "Category",new {id=CategoryId });
         }
+        [HttpPost]
         public IActionResult RemoveAllDuties(int id)
         {
             var category = _categoryRepository.GetCategory(id);
+
+            if(category==null)
+            {
+                throw new Exception("No such category");
+            }
 
             category.Duties.Clear();
 
@@ -52,9 +74,15 @@ namespace MyToDoList.Controllers
 
             return RedirectToAction("Index", "Category", new { id = id });
         }
+        [HttpPost]
         public IActionResult RemoveCategory(int id)
         {
             var category = _categoryRepository.GetCategory(id);
+
+            if (category == null)
+            {
+                throw new Exception("No such category");
+            }
 
             category.Duties.Clear();
 
@@ -65,24 +93,37 @@ namespace MyToDoList.Controllers
         }
 
         [HttpPost]
+        [ExportModelState]
         public IActionResult AddDuty(string StringDay, IndexViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Category", new { id = model.CategoryId });
+            }
+
             Day DayForCreate = Day.Monday;
+            bool StringDayMatchedFlag = false;
 
             foreach(Day day in Enum.GetValues(typeof(Day)))
             {
                 if(day.ToString()==StringDay)
                 {
                     DayForCreate = day;
+                    StringDayMatchedFlag = true;
                     break;
                 }
+            }
+            
+            if(!StringDayMatchedFlag)
+            {
+                throw new Exception("StringDay hasn't matched");
             }
 
             var category = _categoryRepository.GetCategory(Int32.Parse(model.CategoryId));
 
             if (category == null)
             {
-                throw new Exception("Nie ma takiej kategorii");
+                throw new Exception("No such category");
             }
 
             var duty = new Duty()
@@ -98,13 +139,20 @@ namespace MyToDoList.Controllers
 
             return RedirectToAction("Index", "Category", new { id = model.CategoryId });
         }
+        [HttpPost]
+        [ExportModelState]
         public IActionResult ChangeCategoryName(int id,IndexViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Category", new { id = model.CategoryId });
+            }
+
             var category = _categoryRepository.GetCategory(id);
 
-            if(category==null)
+            if (category == null)
             {
-                throw new Exception("ChangeCategoryName brak takiej kategorii");
+                throw new Exception("No such category");
             }
 
             category.Name = model.CategoryNewName;

@@ -48,22 +48,7 @@ namespace MyToDoList.Controllers
 
             if(currentWeek==null)
             {
-                var mondayDate = DateTime.Today;
-                mondayDate = mondayDate.AddDays(-(int)DateTime.Today.DayOfWeek+1);
-
-                var ammountOfDoneDutiesArchive = new AmmountOfDoneDutiesArchive();
-
-                _ammountOfDoneDutiesArchiveRepository.AddNewArchive(ammountOfDoneDutiesArchive);
-
-                currentWeek = new CurrentWeek()
-                {
-                    AmmountOfDoneDutiesArchive = ammountOfDoneDutiesArchive,
-                    Date = mondayDate
-                };
-
-                _currentWeekService.AddCurrentWeek(currentWeek);
-
-                _dbContextService.Commit();
+                throw new Exception("currentWeek doesn't exist");
 
             }
 
@@ -72,6 +57,7 @@ namespace MyToDoList.Controllers
                 _ammountOfDoneDutiesArchiveRepository.ResetArchive();
 
                 var duties = _dutyRepository.Duties;
+
                 foreach(var duty in duties)
                 {
                     var overdueDuty = new OverdueDuty()
@@ -84,10 +70,10 @@ namespace MyToDoList.Controllers
                     _overdueDutyRepository.AddOverdueDuty(overdueDuty);
 
 
-                    _dutyRepository.RemoveDuty(duty.Id);
+                    _dutyRepository.RemoveDuty(duty);
                 }
 
-                currentWeek.Date = DateTime.Today;
+                currentWeek.Date = DateTime.Now;
 
                 _dbContextService.Commit();
             }
@@ -122,14 +108,21 @@ namespace MyToDoList.Controllers
             }
 
             Day DayForCreate=Day.Monday;
+            bool StringDayMatchedFlag = false;
 
             foreach(Day day in Enum.GetValues(typeof(Day)))
             {
                 if(StringDay==day.ToString())
                 {
                     DayForCreate = day;
+                    StringDayMatchedFlag = true;
                     break;
                 }
+            }
+
+            if(!StringDayMatchedFlag)
+            {
+                throw new Exception("StringDay hasn't matched");
             }
 
             var newDuty = new Duty()
@@ -169,7 +162,14 @@ namespace MyToDoList.Controllers
         [HttpPost]
         public IActionResult RemoveDuty(int id)
         {
-            _dutyRepository.RemoveDuty(id);
+            var duty = _dutyRepository.GetDuty(id);
+
+            if(duty==null)
+            {
+                throw new Exception("No such duty");
+            }
+
+            _dutyRepository.RemoveDuty(duty);
 
             _dbContextService.Commit();
 
@@ -180,9 +180,17 @@ namespace MyToDoList.Controllers
         {
             var duty = _dutyRepository.GetDuty(id);
 
+            if(duty==null)
+            {
+                if (duty == null)
+                {
+                    throw new Exception("No such duty");
+                }
+            }
+
             _ammountOfDoneDutiesArchiveRepository.AddDoneDuty(duty);
 
-            _dutyRepository.RemoveDuty(id);
+            _dutyRepository.RemoveDuty(duty);
 
             _dbContextService.Commit();
 
@@ -191,12 +199,16 @@ namespace MyToDoList.Controllers
         [HttpPost]
         public IActionResult ExecuteOverdueDuty(int id)
         {
-            var duty = _overdueDutyRepository.GetOverdueDuty(id);
+            var overdueDuty = _overdueDutyRepository.GetOverdueDuty(id);
+
+            if(overdueDuty==null)
+            {
+                throw new Exception("No such OverdueDuty");
+            }
 
             _ammountOfDoneDutiesArchiveRepository.AddDoneOverdueDuty();
 
-            //POPRAWCIE LINIJKI PONIZEJ
-            _overdueDutyRepository.RemoveOverdueDuty(id);
+            _overdueDutyRepository.RemoveOverdueDuty(overdueDuty);
 
             _dbContextService.Commit();
 
@@ -205,7 +217,14 @@ namespace MyToDoList.Controllers
         [HttpPost]
         public IActionResult RemoveOverdueDuty(int id)
         {
-            _overdueDutyRepository.RemoveOverdueDuty(id);
+            var overdueDuty = _overdueDutyRepository.GetOverdueDuty(id);
+
+            if (overdueDuty == null)
+            {
+                throw new Exception("No such OverdueDuty");
+            } 
+
+            _overdueDutyRepository.RemoveOverdueDuty(overdueDuty);
 
             _dbContextService.Commit();
 
@@ -213,7 +232,7 @@ namespace MyToDoList.Controllers
         }
         bool DoesDateLiesInCurrentWeek(DateTime date)
         { 
-            DateTime startOfWeek = DateTime.Now;
+            DateTime startOfWeek = DateTime.Today;
 
             while(startOfWeek.DayOfWeek!= DayOfWeek.Monday)
             {
