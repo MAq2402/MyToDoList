@@ -96,8 +96,14 @@ namespace MyToDoList.Controllers
         [ExportModelState]
         public IActionResult AddDuty(string StringDay, IndexViewModel model)
         {
-            if(!ModelState.IsValid)
+            if(String.IsNullOrEmpty(model.NewDutyContent))
             {
+                ModelState.AddModelError("","Twoje zadanie nie zawiera żadnej treści!");
+                return RedirectToAction("Index", "Category", new { id = model.CategoryId });
+            }
+            if(model.NewDutyContent.Length>20)
+            {
+                ModelState.AddModelError("", "Maksymalna długość treści twojego zadania wynosi 20 znaków!");
                 return RedirectToAction("Index", "Category", new { id = model.CategoryId });
             }
 
@@ -143,10 +149,17 @@ namespace MyToDoList.Controllers
         [ExportModelState]
         public IActionResult ChangeCategoryName(int id,IndexViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Index", "Category", new { id = model.CategoryId });
-            }
+           if(String.IsNullOrEmpty(model.CategoryNewName))
+           {
+                ModelState.AddModelError("", "Kategoria musi mieć nazwe!");
+                return RedirectToAction("Index", "Category", new { id = id });
+           }
+
+           if(model.CategoryNewName.Length>20)
+           {
+                ModelState.AddModelError("", "Długośc nazwy twojej kategorii to maksymalnie 20 znaków!");
+                return RedirectToAction("Index", "Category", new { id = id });
+           }
 
             var category = _categoryRepository.GetCategory(id);
 
