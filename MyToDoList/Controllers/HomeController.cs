@@ -230,6 +230,18 @@ namespace MyToDoList.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult ChangeDutyDay(string id,string Day)
+        {
+            int day = Int32.Parse(Day);
+           
+            var duty = _dutyRepository.GetDuty(Int32.Parse(id));
+
+            duty.Day = model.newDay;
+
+            _dbContextService.Commit();
+
+            return RedirectToAction("Index", "Home");
+        }
         bool DoesDateLiesInCurrentWeek(DateTime date)
         { 
             DateTime startOfWeek = DateTime.Today;

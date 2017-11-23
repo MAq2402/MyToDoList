@@ -62,9 +62,40 @@
                                 </button>
                             </td>
                             <td align="center">
-                                <button type="submit" class="btn btn-default InvisibleButton" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </button>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Dropdown
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li>
+                                            <button type="submit" class="btn btn-default" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
+                                                Usuń
+                                            </button>
+                                        </li>
+                                        <li>Przenieś na:</li>
+                                        <li>Poniedziałek</li>
+                                        <li>
+                                            @{ 
+                                                var ThuesdayDict = new Dictionary<string, string>
+                                                {
+                                                    {"id",duty.Id.ToString()},
+                                                    {"Day","2" }
+
+                                                };
+                                            }
+                                            <button type="submit" class="btn btn-default" asp-action="ChangeDutyDay" asp-controller="Home" asp-all-route-data="@ThuesdayDict">
+                                                Wtorek
+                                            </button>
+                                        </li>
+                                        <li>Środa</li>
+                                        <li>Czwartek</li>
+                                        <li>Piątek</li>
+                                        <li>Sobota</li>
+                                        <li>Niedziela</li>
+                                    </ul>
+                                </div>
+
                             </td>
 
                     </form>

@@ -16,5 +16,6 @@ namespace MyToDoList.ViewModels.HomeViewModels
         [Required(ErrorMessage ="Twoje zadanie nie zawiera żadnej treści!"),MaxLength(20,ErrorMessage ="Maksymalna długość treści twojego zadania wynosi 20 znaków!")]
         public string Content { get; set; }
         public int DutyCategoryId { get; set; }
+  
     }
 }
