@@ -2,11 +2,9 @@
 <head>
     <link href="~/Styles/Home-Components-Day-Default.css" rel="stylesheet" />
 </head>
-@{
-    int iteration = 0;
-}
 @foreach (Day day in Enum.GetValues(typeof(Day)))
 {
+    int iteration = 0;
     <div id="@day.ToString()" class="panel panel-danger">
         <div class="panel-heading">
 
@@ -45,7 +43,7 @@
                         <th class="col-sm-6">Treść</th>
                         <th class="col-sm-3">Kategoria</th>
                         <th style="text-align:center;" class="col-sm-1">Wykonaj</th>
-                        <th style="text-align:center;" class="col-sm-1">Usuń</th>
+                        <th style="text-align:center;" class="col-sm-1">Inne</th>
                     </tr>
                 }
                 @foreach (var duty in Model.Duties.Where(d => d.Day == day))
@@ -64,39 +62,44 @@
                             <td align="center">
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Dropdown
+                                        ...
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+
                                         <li>
-                                            <button type="submit" class="btn btn-default" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
+                                            <button type="submit" class="btn btn-danger" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
                                                 Usuń
                                             </button>
                                         </li>
-                                        <li>Przenieś na:</li>
-                                        <li>Poniedziałek</li>
+                                        <li class="dropdown-header">Przenieś na:</li>
                                         <li>
-                                            @{ 
-                                                var ThuesdayDict = new Dictionary<string, string>
-                                                {
-                                                    {"id",duty.Id.ToString()},
-                                                    {"Day","2" }
-
-                                                };
-                                            }
-                                            <button type="submit" class="btn btn-default" asp-action="ChangeDutyDay" asp-controller="Home" asp-all-route-data="@ThuesdayDict">
-                                                Wtorek
-                                            </button>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Monday, dutyId = duty.Id, dayNameToDisplay = "Poniedziałek" })
                                         </li>
-                                        <li>Środa</li>
-                                        <li>Czwartek</li>
-                                        <li>Piątek</li>
-                                        <li>Sobota</li>
-                                        <li>Niedziela</li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Tuesday, dutyId = duty.Id, dayNameToDisplay = "Wtorek" })
+                                        </li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Wednesday, dutyId = duty.Id, dayNameToDisplay = "Środa" })
+                                        </li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Thursday, dutyId = duty.Id, dayNameToDisplay = "Czwartek" })
+                                        </li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Friday, dutyId = duty.Id, dayNameToDisplay = "Piątek" })
+                                        </li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Saturday, dutyId = duty.Id, dayNameToDisplay = "Sobota" })
+                                        </li>
+                                        <li>
+                                            @await Component.InvokeAsync("ChangeDay", new { day = Day.Sunday, dutyId = duty.Id, dayNameToDisplay = "Niedziela" })
+                                        </li>
+
                                     </ul>
                                 </div>
 
                             </td>
+                            </tr>
 
                     </form>
                 }

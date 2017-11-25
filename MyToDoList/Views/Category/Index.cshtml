@@ -1,7 +1,7 @@
 ﻿@model MyToDoList.ViewModels.CategoryViewModels.IndexViewModel
 @{
     ViewBag.Title = "Kategoria";
-    int iteration = 0;
+    
 }
 <head>
 
@@ -22,6 +22,7 @@
 
             @foreach (Day day in Enum.GetValues(typeof(Day)))
             {
+                int iteration = 0;
                 <div id="@day.ToString()" class="panel panel-danger">
                     <div class="panel-heading">
 
@@ -60,7 +61,7 @@
                                     <th class="col-sm-6">Treść</th>
                                     <th class="col-sm-3">Kategoria</th>
                                     <th style="text-align:center;" class="col-sm-1">Wykonaj</th>
-                                    <th style="text-align:center;" class="col-sm-1">Usuń</th>
+                                    <th style="text-align:center;" class="col-sm-1">Inne</th>
                                 </tr>
                             }
                             @foreach (var duty in Model.Category.Duties.Where(d => d.Day == day))
@@ -85,10 +86,46 @@
                                             </button>
                                         </td>
                                         <td align="center">
-                                            <button type="submit" class="btn btn-default InvisibleButton" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
-                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                            </button>
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    ...
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+
+                                                    <li>
+                                                        <button type="submit" class="btn btn-danger" asp-action="RemoveDuty" asp-controller="Home" asp-route-id="@duty.Id">
+                                                            Usuń
+                                                        </button>
+                                                    </li>
+                                                    <li class="dropdown-header">Przenieś na:</li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Monday, dutyId = duty.Id, dayNameToDisplay = "Poniedziałek" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Tuesday, dutyId = duty.Id, dayNameToDisplay = "Wtorek" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Wednesday, dutyId = duty.Id, dayNameToDisplay = "Środa" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Thursday, dutyId = duty.Id, dayNameToDisplay = "Czwartek" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Friday, dutyId = duty.Id, dayNameToDisplay = "Piątek" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Saturday, dutyId = duty.Id, dayNameToDisplay = "Sobota" })
+                                                    </li>
+                                                    <li>
+                                                        @await Component.InvokeAsync("ChangeDay", new { day = Day.Sunday, dutyId = duty.Id, dayNameToDisplay = "Niedziela" })
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+
                                         </td>
+                                        </tr>
                                 </form>
                             }
                         </table>

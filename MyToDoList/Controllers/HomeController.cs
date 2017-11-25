@@ -232,11 +232,24 @@ namespace MyToDoList.Controllers
         }
         public IActionResult ChangeDutyDay(string id,string Day)
         {
-            int day = Int32.Parse(Day);
-           
+            Day newDay = Enums.Day.Monday;
+           foreach(Day day in Enum.GetValues(typeof(Day)))
+            {
+                if(day.ToString()==Day)
+                {
+                    newDay = day;
+                    break;
+                }
+            }
+
             var duty = _dutyRepository.GetDuty(Int32.Parse(id));
 
-            duty.Day = model.newDay;
+            if(duty ==null)
+            {
+                throw new Exception("Duty doesn't exist");
+            }
+
+            duty.Day = newDay;
 
             _dbContextService.Commit();
 

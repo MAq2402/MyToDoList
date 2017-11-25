@@ -1,0 +1,12 @@
+﻿@model ChangeDayViewModel
+@{
+    var dict = new Dictionary<string, string>
+                                                {
+                                                    {"id",Model.DutyId.ToString()},
+                                                    {"Day",Model.Day.ToString() }
+
+                                                };
+}
+<button type="submit" class="btn btn-default" asp-action="ChangeDutyDay" asp-controller="Home" asp-all-route-data="@dict">
+    @Model.DayNameToDisplay
+</button>
